@@ -15,6 +15,8 @@
 #include "wx/dynarray.h"
 #include "wx/imaglist.h"
 
+class WXDLLIMPEXP_FWD_CORE wxStaticText;
+
 class WXDLLIMPEXP_CORE wxToolBar : public wxToolBarBase
 {
 public:
@@ -206,6 +208,61 @@ private:
     wxDECLARE_EVENT_TABLE();
     wxDECLARE_DYNAMIC_CLASS(wxToolBar);
     wxDECLARE_NO_COPY_CLASS(wxToolBar);
+};
+
+class WXDLLIMPEXP_CORE wxToolBarTool : public wxToolBarToolBase
+{
+public:
+    wxToolBarTool(wxToolBar *tbar,
+                  int id,
+                  const wxString& label,
+                  const wxBitmapBundle& bmpNormal,
+                  const wxBitmapBundle& bmpDisabled,
+                  wxItemKind kind,
+                  wxObject *clientData,
+                  const wxString& shortHelp,
+                  const wxString& longHelp)
+        : wxToolBarToolBase(tbar, id, label, bmpNormal, bmpDisabled, kind,
+                            clientData, shortHelp, longHelp)
+    {
+        m_staticText = nullptr;
+        m_toBeDeleted  = false;
+    }
+
+    wxToolBarTool(wxToolBar *tbar, wxControl *control, const wxString& label);
+
+    virtual ~wxToolBarTool();
+
+    virtual void SetLabel(const wxString& label) override;
+
+    wxStaticText* GetStaticText()
+    {
+        wxASSERT_MSG( IsControl(),
+                      wxT("only makes sense for embedded control tools") );
+
+        return m_staticText;
+    }
+
+    // we need ids for the spacers which we want to modify later on, this
+    // function will allocate a valid/unique id for a spacer if not done yet
+    void AllocSpacerId()
+    {
+        if ( m_id == wxID_SEPARATOR )
+            m_id = wxWindow::NewControlId();
+    }
+
+    // this method is used for controls only and offsets the control by the
+    // given amount (in pixels) in horizontal direction
+    void MoveBy(int offset);
+
+    void ToBeDeleted(bool toBeDeleted = true) { m_toBeDeleted = toBeDeleted; }
+    bool IsToBeDeleted() const { return m_toBeDeleted; }
+
+private:
+    wxStaticText *m_staticText;
+    bool m_toBeDeleted;
+
+    wxDECLARE_NO_COPY_CLASS(wxToolBarTool);
 };
 
 #endif // wxUSE_TOOLBAR

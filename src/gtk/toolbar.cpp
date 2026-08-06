@@ -26,42 +26,6 @@
 extern bool       g_blockEventsOnDrag;
 
 // ----------------------------------------------------------------------------
-// wxToolBarTool
-// ----------------------------------------------------------------------------
-
-class wxToolBarTool : public wxToolBarToolBase
-{
-public:
-    wxToolBarTool(wxToolBar *tbar,
-                  int id,
-                  const wxString& label,
-                  const wxBitmapBundle& bitmap1,
-                  const wxBitmapBundle& bitmap2,
-                  wxItemKind kind,
-                  wxObject *clientData,
-                  const wxString& shortHelpString,
-                  const wxString& longHelpString)
-        : wxToolBarToolBase(tbar, id, label, bitmap1, bitmap2, kind,
-                            clientData, shortHelpString, longHelpString)
-    {
-        m_item = nullptr;
-    }
-
-    wxToolBarTool(wxToolBar *tbar, wxControl *control, const wxString& label)
-        : wxToolBarToolBase(tbar, control, label)
-    {
-        m_item = nullptr;
-    }
-
-    void SetImage();
-    void CreateDropDown();
-    void ShowDropdown(GtkToggleButton* button);
-    virtual void SetLabel(const wxString& label) override;
-
-    GtkToolItem* m_item;
-};
-
-// ----------------------------------------------------------------------------
 // wxWin macros
 // ----------------------------------------------------------------------------
 

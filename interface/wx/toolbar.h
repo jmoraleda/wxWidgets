@@ -163,6 +163,51 @@ public:
 
 
 
+/**
+    @class wxToolBarTool
+
+    The concrete toolbar tool class used by the current port.
+
+    Objects of this class are normally created by wxToolBar itself, in
+    AddTool() and the other functions adding tools to the toolbar, and it is
+    not necessary to create them explicitly. However doing this and passing
+    the resulting object to wxToolBar::AddTool(wxToolBarToolBase*) is also
+    possible and can be useful for the language bindings which need to have
+    the tool object under their control.
+
+    Only the constructors are documented here as the rest of this class
+    contents is port-specific.
+
+    @see wxToolBar, wxToolBarToolBase
+*/
+class wxToolBarTool : public wxToolBarToolBase
+{
+public:
+    /**
+        Create a tool for the given toolbar.
+
+        Note that the tool is not added to the toolbar by this constructor,
+        this needs to be done separately using wxToolBar::AddTool().
+    */
+    wxToolBarTool(wxToolBar *tbar,
+                  int toolid,
+                  const wxString& label,
+                  const wxBitmapBundle& bmpNormal,
+                  const wxBitmapBundle& bmpDisabled,
+                  wxItemKind kind,
+                  wxObject *clientData,
+                  const wxString& shortHelpString,
+                  const wxString& longHelpString);
+
+    /**
+        Create a tool containing the given control.
+
+        The @a control must have the toolbar as its parent.
+    */
+    wxToolBarTool(wxToolBar *tbar, wxControl *control, const wxString& label);
+};
+
+
 
 /**
     @class wxToolBar
