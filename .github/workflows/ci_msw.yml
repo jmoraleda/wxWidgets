@@ -2,6 +2,7 @@
 name: MSW builds
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - master
